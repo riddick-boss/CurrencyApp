@@ -1,6 +1,6 @@
-package abandonedstudio.app.currencyinfo.ui.exchangerate
+package abandonedstudio.app.currencyinfo.ui.exchangeratelist
 
-import abandonedstudio.app.currencyinfo.databinding.ExchangeRateBinding
+import abandonedstudio.app.currencyinfo.databinding.ExchangeRateListBinding
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,18 +10,17 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ExchangeRateFragment : Fragment() {
+class ExchangeRateListFragment : Fragment() {
 
-    private val viewModel: ExchangeRateViewModel by viewModels()
-    private var _binding: ExchangeRateBinding? = null
+    private val viewModel: ExchangeRateListViewModel by viewModels()
+    private var _binding: ExchangeRateListBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = ExchangeRateBinding.inflate(inflater, container, false)
+        _binding = ExchangeRateListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -33,5 +32,4 @@ class ExchangeRateFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

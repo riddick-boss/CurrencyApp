@@ -1,4 +1,4 @@
-package abandonedstudio.app.currencyinfo.ui.main
+package abandonedstudio.app.currencyinfo.ui.exchangeratelist
 
 import abandonedstudio.app.currencyinfo.model.remote.exchangerate.Exchange
 import abandonedstudio.app.currencyinfo.model.remote.exchangerate.dto.ExchangeRate
