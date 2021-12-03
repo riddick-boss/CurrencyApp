@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/exchangeRateListFragment">
+
+    <fragment
+        android:id="@+id/exchangeRateListFragment"
+        android:name="abandonedstudio.app.currencyinfo.ui.main.ExchangeRateListFragment"
+        android:label="main_fragment"
+        tools:layout="@layout/exchange_rate_list">
+        <action
+            android:id="@+id/action_exchangeRateListFragment_to_exchangeRateFragment"
+            app:destination="@id/exchangeRateFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/exchangeRateFragment"
+        android:name="abandonedstudio.app.currencyinfo.ui.exchangerate.ExchangeRateFragment"
+        android:label="ExchangeRateFragment"
+        tools:layout="@layout/exchange_rate" />
+
+</navigation>
