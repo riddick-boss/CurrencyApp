@@ -1,18 +1,20 @@
 package abandonedstudio.app.currencyinfo
 
-import androidx.appcompat.app.AppCompatActivity
+import abandonedstudio.app.currencyinfo.databinding.MainActivityBinding
 import android.os.Bundle
-import abandonedstudio.app.currencyinfo.ui.main.MainFragment
+import androidx.appcompat.app.AppCompatActivity
 
+/**
+ * @author Pawel Kremienowski <Kremienowski33@gmail.com>
+ */
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: MainActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
-                .commitNow()
-        }
+        binding = MainActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
+
 }
