@@ -8,7 +8,7 @@ import javax.inject.Inject
 class ExchangeRetrofitRepositoryImpl @Inject constructor(private val exchangeApiRetrofit: ExchangeApiRetrofit) :
     ExchangeMainRepository {
 
-    override suspend fun getExchangeRates(date: String?): Resource<ExchangeResponse> {
+    override suspend fun getExchangeRate(date: String?): Resource<ExchangeResponse> {
         return try {
             val response = if (date == null) {
                 exchangeApiRetrofit.getExchangeRatesToday()

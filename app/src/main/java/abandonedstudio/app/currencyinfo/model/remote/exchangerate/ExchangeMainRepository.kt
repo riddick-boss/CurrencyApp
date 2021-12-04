@@ -5,6 +5,6 @@ import abandonedstudio.app.currencyinfo.model.remote.util.Resource
 
 interface ExchangeMainRepository {
 
-    suspend fun getExchangeRates(date: String? = null): Resource<ExchangeResponse>
+    suspend fun getExchangeRate(date: String? = null): Resource<ExchangeResponse>
 
 }

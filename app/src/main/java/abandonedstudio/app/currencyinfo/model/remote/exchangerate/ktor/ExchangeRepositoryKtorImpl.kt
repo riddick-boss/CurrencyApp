@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class ExchangeRepositoryKtorImpl @Inject constructor(private val client: HttpClient) : ExchangeMainRepository {
 
-    override suspend fun getExchangeRates(date: String?): Resource<ExchangeResponse> {
+    override suspend fun getExchangeRate(date: String?): Resource<ExchangeResponse> {
         TODO("Not yet implemented")
     }
 }
