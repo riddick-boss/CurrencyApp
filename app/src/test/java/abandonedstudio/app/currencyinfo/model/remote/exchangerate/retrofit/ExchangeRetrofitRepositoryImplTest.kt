@@ -29,10 +29,25 @@ class ExchangeRetrofitRepositoryImplTest {
         val resource = exchangeRetrofitRepositoryImpl.getExchangeRate()
         resource.data.let {
             if (it != null) {
-                Truth.assertThat(it.success).isFalse()
-//                Truth.assertThat(it.base).isEqualTo("EUR")
+                Truth.assertThat(it.success).isTrue()
+                Truth.assertThat(it.base).isEqualTo("EUR")
             }
+        }
+    }
 
+    @Test
+    fun getExchangeRateFromDateCorrectResult() : Unit = runBlocking {
+        val resource =  exchangeRetrofitRepositoryImpl.getExchangeRate("2013-03-16")
+        resource.data.let {
+            if (it != null) {
+                Truth.assertThat(it.success).isTrue()
+                Truth.assertThat(it.base).isEqualTo("EUR")
+                Truth.assertThat(it.rates.USD).isEqualTo(1.307716)
+                Truth.assertThat(it.rates.AUD).isEqualTo(1.256333)
+                Truth.assertThat(it.rates.CAD).isEqualTo(1.333812)
+                Truth.assertThat(it.rates.PLN).isEqualTo(4.150819)
+                Truth.assertThat(it.rates.MXN).isEqualTo(16.259128)
+            }
         }
     }
 
