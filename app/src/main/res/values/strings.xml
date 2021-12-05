@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CurrencyInfo</string>
+    <string name="load_more">load more</string>
+    <string name="day">day</string>
+    <string name="rate_value">rate value</string>
+    <string name="currency">CURENCY :</string>
 </resources>
