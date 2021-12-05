@@ -28,6 +28,7 @@
                 android:text="@string/day" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rates_RV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:listitem="@layout/exchange_rate_item" />
