@@ -14,7 +14,7 @@ interface ExchangeApiRetrofit {
         @Query("access_key") apiKey: String = BuildConfig.FIXER_API_KEY
     ): Response<ExchangeResponse>
 
-    @GET("date")
+    @GET("{date}")
     suspend fun getExchangeRatesFromDate(
         @Path( value = "date", encoded = true) date: String,
         @Query("access_key") apiKey: String = BuildConfig.FIXER_API_KEY

@@ -7,11 +7,15 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.LinkedHashMap
 
 @HiltViewModel
 class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepository: ExchangeMainRepository) :
@@ -26,21 +30,21 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
     private val _errorMsg = MutableStateFlow("")
     val errorMsg: StateFlow<String> = _errorMsg
 
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    var date: String = dateFormat.format(Calendar.getInstance().time)
+
     private fun getExchangeRate(date: String? = null) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             when (val resource = exchangeMainRepository.getExchangeRate(date)) {
                 is Resource.Success -> {
                     if (resource.data != null) {
                         if (resource.data.success) {
-                            Log.d("remote", "Success")
+                            Log.d("rvs", "Success")
                             val (day, currencies) = convertResponse(resource.data)
-                            Log.d("rvs", day)
-                            Log.d("rvs", currencies.toString())
+                            Log.d("rvs", "About to emit")
                             _ratesList.value[day] = currencies
+                            Log.d("rvs", "Emitted")
                         } else {
-                            Log.d("remote", resource.data.success.toString())
-                            Log.d("remote", resource.data.error.code.toString())
-                            Log.d("remote", resource.data.error.info)
                             emitError("Response fail")
                         }
                     } else {
@@ -70,8 +74,21 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
         getExchangeRate()
     }
 
-    fun getExchangeRateFromDate(date: String) {
+    private fun getExchangeRateFromDate(date: String) {
         getExchangeRate(date)
+    }
+
+    fun getExchangeRateFromPreviousDate() {
+        setPreviousDay()
+        getExchangeRateFromDate(date)
+    }
+
+    private fun setPreviousDay() {
+        val calendar = Calendar.getInstance()
+        calendar.time = dateFormat.parse(date)!!
+        calendar.add(Calendar.DATE, -1)
+        date = dateFormat.format(calendar.time)
+        Log.d("rvs", "prev day: $date")
     }
 
     private fun emitError(errorMsg: String) {

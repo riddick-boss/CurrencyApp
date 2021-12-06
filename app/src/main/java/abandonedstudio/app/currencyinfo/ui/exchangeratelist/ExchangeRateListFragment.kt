@@ -37,12 +37,12 @@ class ExchangeRateListFragment : Fragment(), RatesRVAdapter.OnItemClickedRatesRV
         super.onViewCreated(view, savedInstanceState)
 
         setupDaysRV()
-        viewModel.getExchangeRateToday()
+        daysRVAdapter.submitData(viewModel.ratesList.value)
 
 //        showing toast indicating api response error
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.errorMsg.collectLatest {
-                if (it.isNotBlank()){
+                if (it.isNotBlank()) {
                     Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -50,15 +50,17 @@ class ExchangeRateListFragment : Fragment(), RatesRVAdapter.OnItemClickedRatesRV
 
         lifecycleScope.launchWhenStarted {
             viewModel.ratesList.collect {
-                Toast.makeText(requireContext(), "List submitted", Toast.LENGTH_SHORT).show()
                 Log.d("rvs", "in fragment: $it")
                 daysRVAdapter.submitData(it)
             }
         }
 
         binding.loadMoreB.setOnClickListener {
-            viewModel.getExchangeRateToday()
+            viewModel.getExchangeRateFromPreviousDate()
         }
+
+        viewModel.getExchangeRateToday()
+
     }
 
     override fun onDestroyView() {
