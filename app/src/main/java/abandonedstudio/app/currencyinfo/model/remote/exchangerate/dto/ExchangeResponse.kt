@@ -8,5 +8,6 @@ data class ExchangeResponse(
     val timestamp: Int,
     val base: String,
     val date: String,
-    val rates: Rates
+    val rates: Rates,
+    val error: ErrorResponse
 )

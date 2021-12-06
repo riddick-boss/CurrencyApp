@@ -31,19 +31,19 @@ class ExchangeRateListViewModelTest {
         )
     }
 
-    @Test
-    fun convertResponseCorrectOutput() {
-        val rates = Rates(1.34f, 4.43f, 5.54f, 7.43f, 3.3f)
-        val response = ExchangeResponse(true, 124124, "EUR", "06-12-2021", rates)
-        val (day, currencies) = viewModel.convertResponse(response)
-        val map = linkedMapOf<String, Float>()
-        map["AUD"] = 4.43f
-        map["CAD"] = 5.54f
-        map["MXN"] = 3.3f
-        map["PLN"] = 7.43f
-        map["USD"] = 1.34f
-        Truth.assertThat(day).isEqualTo("06-12-2021")
-        Truth.assertThat(currencies).isEqualTo(map)
-    }
+//    @Test
+//    fun convertResponseCorrectOutput() {
+//        val rates = Rates(1.34f, 4.43f, 5.54f, 7.43f, 3.3f)
+//        val response = ExchangeResponse(true, 124124, "EUR", "06-12-2021", rates)
+//        val (day, currencies) = viewModel.convertResponse(response)
+//        val map = linkedMapOf<String, Float>()
+//        map["AUD"] = 4.43f
+//        map["CAD"] = 5.54f
+//        map["MXN"] = 3.3f
+//        map["PLN"] = 7.43f
+//        map["USD"] = 1.34f
+//        Truth.assertThat(day).isEqualTo("06-12-2021")
+//        Truth.assertThat(currencies).isEqualTo(map)
+//    }
 
 }

@@ -3,11 +3,13 @@ package abandonedstudio.app.currencyinfo.ui.exchangeratelist
 import abandonedstudio.app.currencyinfo.model.remote.exchangerate.ExchangeMainRepository
 import abandonedstudio.app.currencyinfo.model.remote.exchangerate.dto.ExchangeResponse
 import abandonedstudio.app.currencyinfo.model.remote.util.Resource
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +21,7 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
 
     private val _ratesList =
         MutableStateFlow(LinkedHashMap<String, LinkedHashMap<String, Float>>())
-    val ratesList: StateFlow<LinkedHashMap<String, LinkedHashMap<String, Float>>> = _ratesList
+    val ratesList = _ratesList.asStateFlow()
 
     private val _errorMsg = MutableStateFlow("")
     val errorMsg: StateFlow<String> = _errorMsg
@@ -30,9 +32,15 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
                 is Resource.Success -> {
                     if (resource.data != null) {
                         if (resource.data.success) {
+                            Log.d("remote", "Success")
                             val (day, currencies) = convertResponse(resource.data)
+                            Log.d("rvs", day)
+                            Log.d("rvs", currencies.toString())
                             _ratesList.value[day] = currencies
                         } else {
+                            Log.d("remote", resource.data.success.toString())
+                            Log.d("remote", resource.data.error.code.toString())
+                            Log.d("remote", resource.data.error.info)
                             emitError("Response fail")
                         }
                     } else {
@@ -40,6 +48,7 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
                     }
                 }
                 is Resource.Error -> {
+                    Log.d("remote", resource.errorMessage ?: "Unknown error occurred")
                     emitError(resource.errorMessage ?: "Unknown error occurred")
                 }
             }

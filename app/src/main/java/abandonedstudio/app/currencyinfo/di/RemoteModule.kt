@@ -42,6 +42,6 @@ object RemoteModule {
 
     @Singleton
     @Provides
-    fun provideExchangeApi(exchangeImplImpl: ExchangeRetrofitRepositoryImpl): ExchangeMainRepository = exchangeImplImpl
+    fun provideExchangeApi(exchangeImpl: ExchangeRetrofitRepositoryImpl): ExchangeMainRepository = exchangeImpl
 
 }
