@@ -4,10 +4,11 @@ import abandonedstudio.app.currencyinfo.model.remote.exchangerate.ExchangeMainRe
 import abandonedstudio.app.currencyinfo.model.remote.exchangerate.dto.ExchangeResponse
 import abandonedstudio.app.currencyinfo.model.remote.util.Resource
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,6 +28,8 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
         MutableStateFlow(LinkedHashMap<String, LinkedHashMap<String, Float>>())
     val ratesList = _ratesList.asStateFlow()
 
+    val ld = MutableLiveData<LinkedHashMap<String, LinkedHashMap<String, Float>>>()
+
     private val _errorMsg = MutableStateFlow("")
     val errorMsg: StateFlow<String> = _errorMsg
 
@@ -34,7 +37,7 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
     var date: String = dateFormat.format(Calendar.getInstance().time)
 
     private fun getExchangeRate(date: String? = null) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             when (val resource = exchangeMainRepository.getExchangeRate(date)) {
                 is Resource.Success -> {
                     if (resource.data != null) {
@@ -42,7 +45,7 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
                             Log.d("rvs", "Success")
                             val (day, currencies) = convertResponse(resource.data)
                             Log.d("rvs", "About to emit")
-                            _ratesList.value[day] = currencies
+                            ld.postValue(linkedMapOf(day to currencies))
                             Log.d("rvs", "Emitted")
                         } else {
                             emitError("Response fail")

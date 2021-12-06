@@ -37,23 +37,27 @@ class ExchangeRateListFragment : Fragment(), RatesRVAdapter.OnItemClickedRatesRV
         super.onViewCreated(view, savedInstanceState)
 
         setupDaysRV()
-        daysRVAdapter.submitData(viewModel.ratesList.value)
 
 //        showing toast indicating api response error
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.errorMsg.collectLatest {
-                if (it.isNotBlank()) {
-                    Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+//        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+//            viewModel.errorMsg.collectLatest {
+//                if (it.isNotBlank()) {
+//                    Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        }
+//
+//        lifecycleScope.launchWhenStarted {
+//            viewModel.ratesList.collect {
+//                Log.d("rvs", "in fragment: $it")
+//                daysRVAdapter.submitData(it)
+//            }
+//        }
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.ratesList.collect {
-                Log.d("rvs", "in fragment: $it")
+        viewModel.ld.observe(viewLifecycleOwner, {
+            Log.d("rvs", "in fragment: $it")
                 daysRVAdapter.submitData(it)
-            }
-        }
+        })
 
         binding.loadMoreB.setOnClickListener {
             viewModel.getExchangeRateFromPreviousDate()
