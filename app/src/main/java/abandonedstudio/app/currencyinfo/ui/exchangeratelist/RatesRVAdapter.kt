@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 
 class RatesRVAdapter : RecyclerView.Adapter<RatesRVAdapter.RatesViewHolder>() {
 
-    private var data = linkedMapOf<String, Int>()
+    private var data = linkedMapOf<String, Float>()
 
     inner class RatesViewHolder(val binding: ExchangeRateItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    fun submitData(list: LinkedHashMap<String, Int>) {
+    fun submitData(list: LinkedHashMap<String, Float>) {
         data = list
 //        TODO: change notify method
         notifyDataSetChanged()

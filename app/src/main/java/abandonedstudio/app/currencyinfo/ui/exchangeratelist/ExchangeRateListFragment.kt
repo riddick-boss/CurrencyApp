@@ -19,6 +19,8 @@ class ExchangeRateListFragment : Fragment() {
     private var _binding: ExchangeRateListBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var daysRVAdapter: DaysRVAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,6 +32,8 @@ class ExchangeRateListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupDaysRV()
+
 //        showing toast indicating api response error
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.errorMsg.collectLatest {
@@ -39,7 +43,7 @@ class ExchangeRateListFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.ratesList.collectLatest {
-//                TODO: set RV with this list
+                daysRVAdapter.submitData(it)
             }
         }
     }
@@ -48,4 +52,10 @@ class ExchangeRateListFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun setupDaysRV() = binding.daysRV.apply {
+        daysRVAdapter = DaysRVAdapter()
+        adapter = daysRVAdapter
+    }
+
 }

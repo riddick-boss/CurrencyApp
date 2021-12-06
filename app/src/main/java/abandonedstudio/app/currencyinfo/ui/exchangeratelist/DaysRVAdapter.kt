@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 
 class DaysRVAdapter : RecyclerView.Adapter<DaysRVAdapter.DaysViewHolder>() {
 
-    private var data = linkedMapOf<String, LinkedHashMap<String, Int>>()
+    private var data = linkedMapOf<String, LinkedHashMap<String, Float>>()
 
     inner class DaysViewHolder(val binding: ExchangeRateListItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    fun submitData(list: LinkedHashMap<String, LinkedHashMap<String, Int>>) {
+    fun submitData(list: LinkedHashMap<String, LinkedHashMap<String, Float>>) {
         data = list
 //        TODO: change notify method
         notifyDataSetChanged()

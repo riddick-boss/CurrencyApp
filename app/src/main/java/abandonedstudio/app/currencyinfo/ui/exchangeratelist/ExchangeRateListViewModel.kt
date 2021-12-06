@@ -18,8 +18,8 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
 //    TODO: probably use init to fetch first 10 days
 
     private val _ratesList =
-        MutableStateFlow(emptyList<ExchangeResponse>() as MutableList<ExchangeResponse>)
-    val ratesList: StateFlow<List<ExchangeResponse>> = _ratesList
+        MutableStateFlow(LinkedHashMap<String, LinkedHashMap<String, Float>>())
+    val ratesList: StateFlow<LinkedHashMap<String, LinkedHashMap<String, Float>>> = _ratesList
 
     private val _errorMsg = MutableStateFlow("")
     val errorMsg: StateFlow<String> = _errorMsg
@@ -30,7 +30,8 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
                 is Resource.Success -> {
                     if (resource.data != null) {
                         if (resource.data.success) {
-                            _ratesList.value.add(resource.data)
+                            val (day, currencies) = convertResponse(resource.data)
+                            _ratesList.value[day] = currencies
                         } else {
                             emitError("Response fail")
                         }
@@ -43,6 +44,17 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
                 }
             }
         }
+    }
+
+    private fun convertResponse(data: ExchangeResponse): Pair<String, LinkedHashMap<String, Float>> {
+        val day = data.date
+        val currencies = linkedMapOf<String, Float>()
+        currencies["AUD"] = data.rates.AUD
+        currencies["CAD"] = data.rates.CAD
+        currencies["MXN"] = data.rates.MXN
+        currencies["PLN"] = data.rates.PLN
+        currencies["USD"] = data.rates.USD
+        return Pair(day, currencies)
     }
 
     fun getExchangeRateToday() {
