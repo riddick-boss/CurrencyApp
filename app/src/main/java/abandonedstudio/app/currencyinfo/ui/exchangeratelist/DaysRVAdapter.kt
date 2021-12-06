@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class DaysRVAdapter : RecyclerView.Adapter<DaysRVAdapter.DaysViewHolder>() {
+class DaysRVAdapter(private val childListener: RatesRVAdapter.OnItemClickedRatesRV) : RecyclerView.Adapter<DaysRVAdapter.DaysViewHolder>() {
 
     private var data = linkedMapOf<String, LinkedHashMap<String, Float>>()
 
@@ -31,7 +31,7 @@ class DaysRVAdapter : RecyclerView.Adapter<DaysRVAdapter.DaysViewHolder>() {
             holder.absoluteAdapterPosition
         )
         holder.binding.dayTV.text = currentDay
-        val ratesAdapter = RatesRVAdapter()
+        val ratesAdapter = RatesRVAdapter(currentDay, childListener)
         holder.binding.ratesRV.apply {
             adapter = ratesAdapter
 //            TODO: check if working
@@ -44,6 +44,5 @@ class DaysRVAdapter : RecyclerView.Adapter<DaysRVAdapter.DaysViewHolder>() {
     override fun getItemCount(): Int {
         return data.size
     }
-
 
 }

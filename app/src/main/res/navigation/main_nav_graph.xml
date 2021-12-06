@@ -19,6 +19,20 @@
         android:id="@+id/exchangeRateFragment"
         android:name="abandonedstudio.app.currencyinfo.ui.exchangerate.ExchangeRateFragment"
         android:label="ExchangeRateFragment"
-        tools:layout="@layout/exchange_rate" />
+        tools:layout="@layout/exchange_rate">
+        <argument
+            android:name="day"
+            app:argType="string" />
+        <argument
+            android:name="rate"
+            app:argType="string" />
+        <argument
+            android:name="rateCurrency"
+            app:argType="string" />
+        <argument
+            android:name="base"
+            android:defaultValue="EUR"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

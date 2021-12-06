@@ -9,11 +9,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
-class ExchangeRateListFragment : Fragment() {
+class ExchangeRateListFragment : Fragment(), RatesRVAdapter.OnItemClickedRatesRV {
 
     private val viewModel: ExchangeRateListViewModel by viewModels()
     private var _binding: ExchangeRateListBinding? = null
@@ -54,8 +55,19 @@ class ExchangeRateListFragment : Fragment() {
     }
 
     private fun setupDaysRV() = binding.daysRV.apply {
-        daysRVAdapter = DaysRVAdapter()
+        daysRVAdapter = DaysRVAdapter(this@ExchangeRateListFragment)
         adapter = daysRVAdapter
+    }
+
+    //    navigate to ExchangeRateFragment
+    override fun navigate(day: String, rate: String, rateCurrency: String) {
+        val action =
+            ExchangeRateListFragmentDirections.actionExchangeRateListFragmentToExchangeRateFragment(
+                day = day,
+                rate = rate,
+                rateCurrency = rateCurrency
+            )
+        Navigation.findNavController(requireView()).navigate(action)
     }
 
 }
