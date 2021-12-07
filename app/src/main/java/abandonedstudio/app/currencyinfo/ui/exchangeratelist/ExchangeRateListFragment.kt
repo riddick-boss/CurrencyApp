@@ -2,6 +2,7 @@ package abandonedstudio.app.currencyinfo.ui.exchangeratelist
 
 import abandonedstudio.app.currencyinfo.databinding.ExchangeRateListBinding
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,9 +45,7 @@ class ExchangeRateListFragment : Fragment(), RatesRVAdapter.OnItemClickedRatesRV
 
         viewModel.ratesListLD.observe(viewLifecycleOwner, {
             daysRVAdapter.submitData(it)
-            if (it.size < 3) {
-                viewModel.getExchangeRateFromPreviousDate()
-            }
+            viewModel.checkIfEnoughDaysLoaded(it)
         })
 
         binding.daysRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -59,7 +58,11 @@ class ExchangeRateListFragment : Fragment(), RatesRVAdapter.OnItemClickedRatesRV
         })
 
         if (viewModel.ratesListLD.value.isNullOrEmpty()) {
+            Log.d("days", "list null")
             viewModel.getExchangeRateFromPreviousDate()
+        } else {
+            Log.d("days", "submit")
+            daysRVAdapter.submitData(viewModel.ratesListLD.value!!)
         }
     }
 
@@ -76,7 +79,6 @@ class ExchangeRateListFragment : Fragment(), RatesRVAdapter.OnItemClickedRatesRV
 
     //    navigate to ExchangeRateFragment
     override fun navigate(day: String, rate: String, rateCurrency: String) {
-        viewModel.setToday()
         val action =
             ExchangeRateListFragmentDirections.actionExchangeRateListFragmentToExchangeRateFragment(
                 day = day,

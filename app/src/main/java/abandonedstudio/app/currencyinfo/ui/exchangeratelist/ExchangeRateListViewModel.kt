@@ -3,6 +3,7 @@ package abandonedstudio.app.currencyinfo.ui.exchangeratelist
 import abandonedstudio.app.currencyinfo.model.remote.exchangerate.ExchangeMainRepository
 import abandonedstudio.app.currencyinfo.model.remote.exchangerate.dto.ExchangeResponse
 import abandonedstudio.app.currencyinfo.model.remote.util.Resource
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,7 +32,15 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
                     if (resource.data != null) {
                         if (resource.data.success) {
                             val (day, currencies) = convertResponse(resource.data)
-                            ratesListLD.postValue(linkedMapOf(day to currencies))
+                            val mapHelper = ratesListLD.value
+                            mapHelper?.set(day, currencies)
+                            Log.d("days", mapHelper.toString())
+                            Log.d("days", ratesListLD.value.toString())
+                            if (ratesListLD.value.isNullOrEmpty()) {
+                                ratesListLD.postValue(linkedMapOf(day to currencies))
+                            } else {
+                                ratesListLD.postValue(mapHelper!!)
+                            }
                         } else {
                             emitError("Response fail")
                         }
@@ -75,11 +84,6 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
         setPreviousDay()
     }
 
-    fun setToday() {
-        date = dateFormat.format(Calendar.getInstance().time)
-        ratesListLD.value?.clear()
-    }
-
     private fun setPreviousDay() {
         val calendar = Calendar.getInstance()
         calendar.time = dateFormat.parse(date)!!
@@ -89,6 +93,12 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
 
     private fun emitError(errorMsg: String) {
         errorMsgLD.postValue(errorMsg)
+    }
+
+    fun checkIfEnoughDaysLoaded(map: LinkedHashMap<String, LinkedHashMap<String, Float>>) {
+        if (map.size < 3) {
+            getExchangeRateFromPreviousDate()
+        }
     }
 
 }

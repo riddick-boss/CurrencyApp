@@ -16,7 +16,6 @@ class RatesRVAdapter(private val parentDay: String, private val listener: OnItem
 
     fun submitData(list: LinkedHashMap<String, Float>) {
         data = list
-//        notifyDataSetChanged()
         notifyItemInserted(data.size - 1)
     }
 

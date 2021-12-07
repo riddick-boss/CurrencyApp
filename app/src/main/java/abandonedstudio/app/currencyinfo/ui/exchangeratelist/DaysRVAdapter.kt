@@ -17,7 +17,6 @@ class DaysRVAdapter(private val childListener: RatesRVAdapter.OnItemClickedRates
 
     fun submitData(list: LinkedHashMap<String, LinkedHashMap<String, Float>>) {
         data.putAll(list)
-        //        notifyDataSetChanged()
         notifyItemInserted(data.size - 1)
     }
 
@@ -39,7 +38,6 @@ class DaysRVAdapter(private val childListener: RatesRVAdapter.OnItemClickedRates
             layoutManager = LinearLayoutManager(context)
             ratesAdapter.submitData(currentRatesMap)
         }
-//        ratesAdapter.submitData(currentRatesMap)
     }
 
     override fun getItemCount(): Int {
