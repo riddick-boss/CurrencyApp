@@ -11,12 +11,11 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.LinkedHashMap
 
 @HiltViewModel
 class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepository: ExchangeMainRepository) :
     ViewModel() {
-
-//    TODO: probably use init to fetch first 10 days
 
     val ratesListLD = MutableLiveData<LinkedHashMap<String, LinkedHashMap<String, Float>>>()
 

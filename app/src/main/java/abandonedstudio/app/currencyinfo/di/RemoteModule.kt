@@ -8,11 +8,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import io.ktor.client.*
-import io.ktor.client.engine.android.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.logging.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -20,17 +15,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RemoteModule {
-
-    @Singleton
-    @Provides
-    fun provideKtorHttpClient() = HttpClient(Android) {
-        install(Logging) {
-            level = LogLevel.ALL
-        }
-        install(JsonFeature) {
-            serializer = KotlinxSerializer()
-        }
-    }
 
     @Singleton
     @Provides
@@ -42,6 +26,7 @@ object RemoteModule {
 
     @Singleton
     @Provides
-    fun provideExchangeApi(exchangeImpl: ExchangeRetrofitRepositoryImpl): ExchangeMainRepository = exchangeImpl
+    fun provideExchangeApi(exchangeImpl: ExchangeRetrofitRepositoryImpl): ExchangeMainRepository =
+        exchangeImpl
 
 }

@@ -17,8 +17,8 @@ class DaysRVAdapter(private val childListener: RatesRVAdapter.OnItemClickedRates
 
     fun submitData(list: LinkedHashMap<String, LinkedHashMap<String, Float>>) {
         data.putAll(list)
-//        TODO: change notify method
-        notifyDataSetChanged()
+        //        notifyDataSetChanged()
+        notifyItemInserted(data.size - 1)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DaysViewHolder {
@@ -36,7 +36,6 @@ class DaysRVAdapter(private val childListener: RatesRVAdapter.OnItemClickedRates
         val ratesAdapter = RatesRVAdapter(currentDay, childListener)
         holder.binding.ratesRV.apply {
             adapter = ratesAdapter
-//            TODO: check if working
             layoutManager = LinearLayoutManager(context)
             ratesAdapter.submitData(currentRatesMap)
         }

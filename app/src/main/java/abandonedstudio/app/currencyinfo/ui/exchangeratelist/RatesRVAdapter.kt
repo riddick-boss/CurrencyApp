@@ -6,7 +6,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class RatesRVAdapter(private val parentDay: String, private val listener: OnItemClickedRatesRV) : RecyclerView.Adapter<RatesRVAdapter.RatesViewHolder>() {
+class RatesRVAdapter(private val parentDay: String, private val listener: OnItemClickedRatesRV) :
+    RecyclerView.Adapter<RatesRVAdapter.RatesViewHolder>() {
 
     private var data = linkedMapOf<String, Float>()
 
@@ -15,8 +16,8 @@ class RatesRVAdapter(private val parentDay: String, private val listener: OnItem
 
     fun submitData(list: LinkedHashMap<String, Float>) {
         data = list
-//        TODO: change notify method
-        notifyDataSetChanged()
+//        notifyDataSetChanged()
+        notifyItemInserted(data.size - 1)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RatesViewHolder {

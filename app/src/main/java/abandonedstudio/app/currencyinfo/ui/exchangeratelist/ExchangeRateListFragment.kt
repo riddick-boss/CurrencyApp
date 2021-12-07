@@ -44,11 +44,10 @@ class ExchangeRateListFragment : Fragment(), RatesRVAdapter.OnItemClickedRatesRV
 
         viewModel.ratesListLD.observe(viewLifecycleOwner, {
             daysRVAdapter.submitData(it)
+            if (it.size<3){
+                viewModel.getExchangeRateFromPreviousDate()
+            }
         })
-
-        binding.loadMoreB.setOnClickListener {
-            viewModel.getExchangeRateFromPreviousDate()
-        }
 
         binding.daysRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -60,9 +59,9 @@ class ExchangeRateListFragment : Fragment(), RatesRVAdapter.OnItemClickedRatesRV
         })
 
         if (viewModel.ratesListLD.value.isNullOrEmpty()) {
-            for (i in 1..3) {
-                viewModel.getExchangeRateFromPreviousDate()
-            }
+            viewModel.getExchangeRateFromPreviousDate()
+        } else {
+            daysRVAdapter.submitData(viewModel.ratesListLD.value!!)
         }
     }
 
