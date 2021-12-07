@@ -3,7 +3,6 @@ package abandonedstudio.app.currencyinfo.ui.exchangeratelist
 import abandonedstudio.app.currencyinfo.model.remote.exchangerate.ExchangeMainRepository
 import abandonedstudio.app.currencyinfo.model.remote.exchangerate.dto.ExchangeResponse
 import abandonedstudio.app.currencyinfo.model.remote.util.Resource
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,7 +22,7 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
     val errorMsgLD = MutableLiveData<String>()
 
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    var date: String = dateFormat.format(Calendar.getInstance().time)
+    private var date: String = dateFormat.format(Calendar.getInstance().time)
 
     private fun getExchangeRate(date: String? = null) {
         viewModelScope.launch {
@@ -34,8 +33,6 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
                             val (day, currencies) = convertResponse(resource.data)
                             val mapHelper = ratesListLD.value
                             mapHelper?.set(day, currencies)
-                            Log.d("days", mapHelper.toString())
-                            Log.d("days", ratesListLD.value.toString())
                             if (ratesListLD.value.isNullOrEmpty()) {
                                 ratesListLD.postValue(linkedMapOf(day to currencies))
                             } else {

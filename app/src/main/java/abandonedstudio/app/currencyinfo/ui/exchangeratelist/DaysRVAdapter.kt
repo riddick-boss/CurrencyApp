@@ -32,7 +32,7 @@ class DaysRVAdapter(private val childListener: RatesRVAdapter.OnItemClickedRates
             holder.absoluteAdapterPosition
         )
         holder.binding.dayTV.text = currentDay
-        val ratesAdapter = RatesRVAdapter(currentDay, childListener)
+        val ratesAdapter = RatesRVAdapter(holder.absoluteAdapterPosition, currentDay, childListener)
         holder.binding.ratesRV.apply {
             adapter = ratesAdapter
             layoutManager = LinearLayoutManager(context)

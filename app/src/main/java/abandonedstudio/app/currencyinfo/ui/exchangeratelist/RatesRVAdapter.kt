@@ -6,7 +6,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class RatesRVAdapter(private val parentDay: String, private val listener: OnItemClickedRatesRV) :
+class RatesRVAdapter(
+    private val parentRVPos: Int,
+    private val parentDay: String,
+    private val listener: OnItemClickedRatesRV
+) :
     RecyclerView.Adapter<RatesRVAdapter.RatesViewHolder>() {
 
     private var data = linkedMapOf<String, Float>()
@@ -33,7 +37,7 @@ class RatesRVAdapter(private val parentDay: String, private val listener: OnItem
         holder.binding.currencyTV.text = currentCurrency
         holder.binding.rateValueTV.text = currentRateValue.toString()
         holder.binding.rateItemCV.setOnClickListener {
-            listener.navigate(parentDay, currentRateValue.toString(), currentCurrency)
+            listener.navigate(parentRVPos, parentDay, currentRateValue.toString(), currentCurrency)
         }
     }
 
@@ -42,7 +46,7 @@ class RatesRVAdapter(private val parentDay: String, private val listener: OnItem
     }
 
     interface OnItemClickedRatesRV {
-        fun navigate(day: String, rate: String, rateCurrency: String)
+        fun navigate(parentRVPos: Int, day: String, rate: String, rateCurrency: String)
     }
 
 }
