@@ -75,6 +75,11 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
         setPreviousDay()
     }
 
+    fun setToday() {
+        date = dateFormat.format(Calendar.getInstance().time)
+        ratesListLD.value?.clear()
+    }
+
     private fun setPreviousDay() {
         val calendar = Calendar.getInstance()
         calendar.time = dateFormat.parse(date)!!

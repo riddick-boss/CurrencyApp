@@ -44,7 +44,7 @@ class ExchangeRateListFragment : Fragment(), RatesRVAdapter.OnItemClickedRatesRV
 
         viewModel.ratesListLD.observe(viewLifecycleOwner, {
             daysRVAdapter.submitData(it)
-            if (it.size<3){
+            if (it.size < 3) {
                 viewModel.getExchangeRateFromPreviousDate()
             }
         })
@@ -60,8 +60,6 @@ class ExchangeRateListFragment : Fragment(), RatesRVAdapter.OnItemClickedRatesRV
 
         if (viewModel.ratesListLD.value.isNullOrEmpty()) {
             viewModel.getExchangeRateFromPreviousDate()
-        } else {
-            daysRVAdapter.submitData(viewModel.ratesListLD.value!!)
         }
     }
 
@@ -78,6 +76,7 @@ class ExchangeRateListFragment : Fragment(), RatesRVAdapter.OnItemClickedRatesRV
 
     //    navigate to ExchangeRateFragment
     override fun navigate(day: String, rate: String, rateCurrency: String) {
+        viewModel.setToday()
         val action =
             ExchangeRateListFragmentDirections.actionExchangeRateListFragmentToExchangeRateFragment(
                 day = day,

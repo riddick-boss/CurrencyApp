@@ -2,6 +2,7 @@ package abandonedstudio.app.currencyinfo.di
 
 import abandonedstudio.app.currencyinfo.model.remote.HttpRoutes
 import abandonedstudio.app.currencyinfo.model.remote.exchangerate.ExchangeMainRepository
+import abandonedstudio.app.currencyinfo.model.remote.exchangerate.fake.ExchangeFakeRepoImpl
 import abandonedstudio.app.currencyinfo.model.remote.exchangerate.retrofit.ExchangeApiRetrofit
 import abandonedstudio.app.currencyinfo.model.remote.exchangerate.retrofit.ExchangeRetrofitRepositoryImpl
 import dagger.Module
@@ -26,7 +27,7 @@ object RemoteModule {
 
     @Singleton
     @Provides
-    fun provideExchangeApi(exchangeImpl: ExchangeRetrofitRepositoryImpl): ExchangeMainRepository =
+    fun provideExchangeApi(exchangeImpl: ExchangeFakeRepoImpl): ExchangeMainRepository =
         exchangeImpl
 
 }
