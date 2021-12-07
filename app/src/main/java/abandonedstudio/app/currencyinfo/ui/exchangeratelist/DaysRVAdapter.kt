@@ -2,13 +2,13 @@ package abandonedstudio.app.currencyinfo.ui.exchangeratelist
 
 import abandonedstudio.app.currencyinfo.databinding.ExchangeRateListItemBinding
 import abandonedstudio.app.currencyinfo.util.Converter
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class DaysRVAdapter(private val childListener: RatesRVAdapter.OnItemClickedRatesRV) : RecyclerView.Adapter<DaysRVAdapter.DaysViewHolder>() {
+class DaysRVAdapter(private val childListener: RatesRVAdapter.OnItemClickedRatesRV) :
+    RecyclerView.Adapter<DaysRVAdapter.DaysViewHolder>() {
 
     private var data = linkedMapOf<String, LinkedHashMap<String, Float>>()
 
@@ -17,9 +17,6 @@ class DaysRVAdapter(private val childListener: RatesRVAdapter.OnItemClickedRates
 
     fun submitData(list: LinkedHashMap<String, LinkedHashMap<String, Float>>) {
         data.putAll(list)
-        Log.d("rvs", "List submitted")
-        Log.d("rvs", "rv list: $list")
-        Log.d("rvs", "rv data $data")
 //        TODO: change notify method
         notifyDataSetChanged()
     }
@@ -35,8 +32,6 @@ class DaysRVAdapter(private val childListener: RatesRVAdapter.OnItemClickedRates
             data,
             holder.absoluteAdapterPosition
         )
-        Log.d("rvs", "currentDay: $currentDay")
-        Log.d("rvs", "currentRatesMap: $currentRatesMap")
         holder.binding.dayTV.text = currentDay
         val ratesAdapter = RatesRVAdapter(currentDay, childListener)
         holder.binding.ratesRV.apply {

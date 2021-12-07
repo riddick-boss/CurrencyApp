@@ -2,19 +2,16 @@ package abandonedstudio.app.currencyinfo.ui.exchangeratelist
 
 import abandonedstudio.app.currencyinfo.databinding.ExchangeRateListBinding
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class ExchangeRateListFragment : Fragment(), RatesRVAdapter.OnItemClickedRatesRV {
@@ -39,32 +36,34 @@ class ExchangeRateListFragment : Fragment(), RatesRVAdapter.OnItemClickedRatesRV
         setupDaysRV()
 
 //        showing toast indicating api response error
-//        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-//            viewModel.errorMsg.collectLatest {
-//                if (it.isNotBlank()) {
-//                    Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
-//
-//        lifecycleScope.launchWhenStarted {
-//            viewModel.ratesList.collect {
-//                Log.d("rvs", "in fragment: $it")
-//                daysRVAdapter.submitData(it)
-//            }
-//        }
+        viewModel.errorMsgLD.observe(viewLifecycleOwner, {
+            if (it.isNotBlank()) {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        })
 
-        viewModel.ld.observe(viewLifecycleOwner, {
-            Log.d("rvs", "in fragment: $it")
-                daysRVAdapter.submitData(it)
+        viewModel.ratesListLD.observe(viewLifecycleOwner, {
+            daysRVAdapter.submitData(it)
         })
 
         binding.loadMoreB.setOnClickListener {
             viewModel.getExchangeRateFromPreviousDate()
         }
 
-        viewModel.getExchangeRateToday()
+        binding.daysRV.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1)) {
+                    viewModel.getExchangeRateFromPreviousDate()
+                }
+            }
+        })
 
+        if (viewModel.ratesListLD.value.isNullOrEmpty()) {
+            for (i in 1..3) {
+                viewModel.getExchangeRateFromPreviousDate()
+            }
+        }
     }
 
     override fun onDestroyView() {

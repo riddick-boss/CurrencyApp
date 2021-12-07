@@ -3,20 +3,14 @@ package abandonedstudio.app.currencyinfo.ui.exchangeratelist
 import abandonedstudio.app.currencyinfo.model.remote.exchangerate.ExchangeMainRepository
 import abandonedstudio.app.currencyinfo.model.remote.exchangerate.dto.ExchangeResponse
 import abandonedstudio.app.currencyinfo.model.remote.util.Resource
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.LinkedHashMap
 
 @HiltViewModel
 class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepository: ExchangeMainRepository) :
@@ -24,14 +18,9 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
 
 //    TODO: probably use init to fetch first 10 days
 
-    private val _ratesList =
-        MutableStateFlow(LinkedHashMap<String, LinkedHashMap<String, Float>>())
-    val ratesList = _ratesList.asStateFlow()
+    val ratesListLD = MutableLiveData<LinkedHashMap<String, LinkedHashMap<String, Float>>>()
 
-    val ld = MutableLiveData<LinkedHashMap<String, LinkedHashMap<String, Float>>>()
-
-    private val _errorMsg = MutableStateFlow("")
-    val errorMsg: StateFlow<String> = _errorMsg
+    val errorMsgLD = MutableLiveData<String>()
 
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     var date: String = dateFormat.format(Calendar.getInstance().time)
@@ -42,11 +31,8 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
                 is Resource.Success -> {
                     if (resource.data != null) {
                         if (resource.data.success) {
-                            Log.d("rvs", "Success")
                             val (day, currencies) = convertResponse(resource.data)
-                            Log.d("rvs", "About to emit")
-                            ld.postValue(linkedMapOf(day to currencies))
-                            Log.d("rvs", "Emitted")
+                            ratesListLD.postValue(linkedMapOf(day to currencies))
                         } else {
                             emitError("Response fail")
                         }
@@ -55,7 +41,6 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
                     }
                 }
                 is Resource.Error -> {
-                    Log.d("remote", resource.errorMessage ?: "Unknown error occurred")
                     emitError(resource.errorMessage ?: "Unknown error occurred")
                 }
             }
@@ -73,7 +58,7 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
         return Pair(day, currencies)
     }
 
-    fun getExchangeRateToday() {
+    private fun getExchangeRateToday() {
         getExchangeRate()
     }
 
@@ -82,8 +67,13 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
     }
 
     fun getExchangeRateFromPreviousDate() {
-        setPreviousDay()
+        if (date == dateFormat.format(Calendar.getInstance().time)) {
+            getExchangeRateToday()
+            setPreviousDay()
+            return
+        }
         getExchangeRateFromDate(date)
+        setPreviousDay()
     }
 
     private fun setPreviousDay() {
@@ -91,11 +81,10 @@ class ExchangeRateListViewModel @Inject constructor(private val exchangeMainRepo
         calendar.time = dateFormat.parse(date)!!
         calendar.add(Calendar.DATE, -1)
         date = dateFormat.format(calendar.time)
-        Log.d("rvs", "prev day: $date")
     }
 
     private fun emitError(errorMsg: String) {
-        _errorMsg.value = errorMsg
+        errorMsgLD.postValue(errorMsg)
     }
 
 }

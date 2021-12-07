@@ -8,10 +8,12 @@
         android:id="@+id/day_TV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="52dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="@string/day" />
+        android:text="@string/day"
+        android:textColor="@color/black"
+        android:textSize="32sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,24 +25,45 @@
             android:id="@+id/base_TV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="EUR" />
+            android:text="EUR"
+            android:textColor="@color/black"
+            android:textSize="22sp" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/rate_TV"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="RATE" />
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/rate_TV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="RATE"
+                android:textColor="@color/black"
+                android:textSize="22sp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_baseline_arrow_right_alt_24" />
+        </LinearLayout>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/rate_currency_TV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="TO" />
+            android:text="TO"
+            android:textColor="@color/black"
+            android:textSize="22sp" />
     </LinearLayout>
 </LinearLayout>

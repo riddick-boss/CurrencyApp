@@ -30,7 +30,9 @@
                     android:id="@+id/day_TV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/day" />
+                    android:text="@string/day"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rates_RV"
