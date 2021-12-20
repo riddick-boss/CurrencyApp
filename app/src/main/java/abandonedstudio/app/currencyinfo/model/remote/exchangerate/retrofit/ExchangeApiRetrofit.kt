@@ -11,13 +11,15 @@ interface ExchangeApiRetrofit {
 
     @GET("latest")
     suspend fun getExchangeRatesToday(
-        @Query("access_key") apiKey: String = BuildConfig.FIXER_API_KEY
+//        @Query("access_key") apiKey: String = BuildConfig.FIXER_API_KEY
+        @Query("access_key") apiKey: String = "ZZZ"
     ): Response<ExchangeResponse>
 
     @GET("{date}")
     suspend fun getExchangeRatesFromDate(
         @Path(value = "date", encoded = true) date: String,
-        @Query("access_key") apiKey: String = BuildConfig.FIXER_API_KEY
+//        @Query("access_key") apiKey: String = BuildConfig.FIXER_API_KEY
+        @Query("access_key") apiKey: String = "ZZZ"
     ): Response<ExchangeResponse>
 
 }
